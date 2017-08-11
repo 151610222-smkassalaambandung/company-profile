@@ -19,18 +19,25 @@ class jaketController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()){
-            $jakets = jakett::with('bahanjakets');
-            return Datatables::of($jakets)->make(true);
-            
+            $jakets = jakett::with('bahanjakets')->get();
+            return Datatables::of($jakets)
+             ->addColumn('action',function($jaket){
+                return view('datatable._action', [
+                    'model'     => $author,
+                    'form_url'  => route('jaket.destroy',$jaket->id),
+                    'edit_url'  => route('jaket.edit',$jaket->id),
+                    'confirm_message' => 'Yakin Ingin Menghapus ' . $jaket->id . ' ?' ]);
+            })->make(true);
         }
+
         $html = $htmlBuilder
         ->addColumn(['data'=>'foto','name'=>'foto','title'=>'Foto'])
         ->addColumn(['data'=>'harga','name'=>'harga','title'=>'Harga'])
-        ->addColumn(['data'=>'bahanjakets.bahan_jaket','name'=>'bahanjakets.bahan_jaket','title'=>'Bahan']);
-
-        
+        ->addColumn(['data'=>'bahanjakets.bahan_jaket','name'=>'bahanjakets.bahan_jaket','title'=>'Bahan'])
+        ->addColumn(['data'=>'action','name'=>'action','title'=>'action','orderable'=>false,'searchable'=>false]);
         return view('jaket.index')->with(compact('html'));
     }
+        
 
 
     /**

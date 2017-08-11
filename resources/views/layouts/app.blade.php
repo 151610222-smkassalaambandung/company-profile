@@ -49,8 +49,10 @@
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                         <li><a href="{{ url('/home') }}">Dashboard</a></li>
-                        <li><a href="{{ route('bahan.index') }}">bahan jaket</a></li>
-                        <li><a href="{{ route('jaket.index') }}"> jaket</a></li>
+                        <li><a href="{{ route('bahan.index') }}">Bahan jaket</a></li>
+                        <li><a href="{{ route('jaket.index') }}"> Jaket</a></li>
+                        <li><a href="{{ route('kategori.index') }}"> Kategori</a></li>
+                        <li><a href="{{ route('blog.index') }}"> Blog</a></li>
                         @endif
                         &nbsp;
                     </ul>

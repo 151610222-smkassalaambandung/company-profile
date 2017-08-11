@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Kategori;
+use Yajra\Datatables\Html\Builder;
+use Yajra\Datatables\Datatables;
 
 class kategoriController extends Controller
 {
@@ -11,9 +14,19 @@ class kategoriController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Builder $htmlBuilder)
     {
-        //
+        if ($request->ajax()){
+            $kategorii = Kategori::select(['id','nama_katgeori']);
+            return Datatables::of($kategorii)->make(true);
+            
+        }
+        $html = $htmlBuilder
+        ->addColumn(['data'=>'nama_katgeori','name'=>'nama_katgeori','title'=>'Kategori']);
+        
+
+        return view('kategori.index')->with(compact('html'));
+    
     }
 
     /**
@@ -24,6 +37,7 @@ class kategoriController extends Controller
     public function create()
     {
         //
+        return view('kategori.create');
     }
 
     /**
@@ -34,7 +48,12 @@ class kategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $this->validate($request, ['nama_katgeori' => 'required|unique:bahanjakets']);
+        $kategorii = $request->all();
+        kategori::create($kategorii);
+        
+        // $bahanjaket = bahanjaket::create($request->all());
+        return redirect('/admin/kategori');
     }
 
     /**

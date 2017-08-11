@@ -9,6 +9,6 @@ class bahanjaket extends Model
 	protected $fillable =['bahan_jaket'];
 	
     public function jaketts(){
-    	return $this->hasMany('App\jakett');
+    	return $this->hasMany('App\jakett','bahanjakets_id');
     }
 }

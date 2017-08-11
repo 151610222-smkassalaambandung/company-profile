@@ -1,5 +1,5 @@
 <div class="form-group{{ $errors->has('foto') ? 'has-error' : '' }}">
-	{!! Form::label('foto','Sampul',['class'=>'col-md-2 control-label']) !!}
+	{!! Form::label('foto','Foto',['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::file('foto') !!} <br>
 		@if(isset($book) && $book->foto)

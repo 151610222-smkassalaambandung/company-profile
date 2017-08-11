@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class jakett extends Model
 {
-	protected $fillable =['foto','harga'];
+	protected $fillable =['foto','harga','bahanjakets_id'];
     public function bahanjakets(){
-    	return $this->belongsTo('App\bahanjaket');
+    	return $this->belongsTo('App\bahanjaket','bahanjakets_id');
     }
 }

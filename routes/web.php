@@ -20,16 +20,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-Route::group(['middleware'=>'web'], function(){
+// Route::group(['middleware'=>'web'], function()
+
+
  Route::group(['prefix'=>'admin','middleware'=>['auth','role:admin']],function () {
  	Route::resource('jaket','jaketController');
  	Route::resource('bahan','bahanjaketController');
  	Route::resource('kategori','kategoriController');
 
+ 	Route::resource('blog','blogcontroller');
+
 
    });
-});
 
-Route::get('/test', function () {
-    return view('profil');
-});

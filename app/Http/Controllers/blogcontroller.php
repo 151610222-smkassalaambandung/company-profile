@@ -3,42 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\bahanjaket;
+use App\Blog;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
 
-
-
-
-class bahanjaketController extends Controller
+class blogcontroller extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     public function index(Request $request, Builder $htmlBuilder)
+    public function index(Request $request, Builder $htmlBuilder)
     {
+        //
         if ($request->ajax()){
-            $bahanjakets = bahanjaket::select(['id','bahan_jaket']);
-            return Datatables::of($bahanjakets)
-            
-            ->addColumn('action',function($bahanjaket){
-                return view('datatable._action', [
-                    'model'     => $bahanjaket,
-                    'form_url'  => route('bahan.destroy',$bahanjaket->id),
-                    'edit_url'  => route('bahan.edit',$bahanjaket->id),
-                    'confirm_message' => 'Yakin Ingin Menghapus ' . $bahanjaket->name . ' ?' ]);
-            })->make(true);
-
-            
+            $blog = Blog::with('kategoris')->get();
+            return Datatables::of($blog)
+            ->make(true);
         }
         $html = $htmlBuilder
-        ->addColumn(['data'=>'bahan_jaket','name'=>'bahan_jaket','title'=>'Bahan Jaket'])
-           ->addColumn(['data'=>'action','name'=>'action','title'=>'','orderable'=>false,'searchable'=>false]);
+        ->addColumn(['data'=>'judul','name'=>'judul','title'=>'judul'])
+        ->addColumn(['data'=>'foto','name'=>'foto','title'=>'foto'])
+        ->addColumn(['data'=>'isi','name'=>'isi','title'=>'isi'])
+        ->addColumn(['data'=>'kategoris.nama_katgeori','name'=>'kategoris.nama_katgeori','title'=>'kategori']);
 
-
-        return view('bahan.index')->with(compact('html'));
+        
+        return view('blog.index')->with(compact('html'));
     }
 
     /**
@@ -48,7 +40,10 @@ class bahanjaketController extends Controller
      */
     public function create()
     {
-        return view('bahan.create');
+        //
+
+        return view('blog.create');
+
     }
 
     /**
@@ -60,12 +55,7 @@ class bahanjaketController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, ['bahan_jaket' => 'required|unique:bahanjakets']);
-        $bahanjaket = $request->all();
-        bahanjaket::create($bahanjaket);
         
-        // $bahanjaket = bahanjaket::create($request->all());
-        return redirect('/admin/bahan');
     }
 
     /**
